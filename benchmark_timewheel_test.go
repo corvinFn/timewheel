@@ -23,5 +23,5 @@ func BenchmarkTimeWheelTest(b *testing.B) {
 		tw.addTimer(delay, f, false)
 	}
 	time.Sleep(100 * time.Millisecond)
-	require.EqualValues(b, b.N, num)
+	require.EqualValues(b, b.N, atomic.LoadInt32(&num))
 }

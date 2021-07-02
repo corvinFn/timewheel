@@ -91,7 +91,7 @@ func TestTimeWheelRepeat(t *testing.T) {
 		tw.addTimer(delay, tfun, true)
 
 		wfun := func() {
-			if num != (repeatTime+1)*100 {
+			if atomic.LoadInt32(&num) != (repeatTime+1)*100 {
 				panic(errors.New("timer repeat wrong"))
 			}
 			testChan <- struct{}{}
