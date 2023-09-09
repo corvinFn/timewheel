@@ -17,6 +17,8 @@ type CallBack func()
 
 // based on https://github.com/ouqiang/timewheel
 type TimeWheel struct {
+	noCopy noCopy
+
 	interval          time.Duration // time interval to moving forward
 	ticker            *time.Ticker
 	slots             []*list.List
@@ -236,3 +238,8 @@ func RemoveTimer(key string) {
 func Stop() {
 	tw.stop()
 }
+
+type noCopy struct{}
+
+func (*noCopy) Lock()   {}
+func (*noCopy) Unlock() {}
