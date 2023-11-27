@@ -71,7 +71,6 @@ func TestTimeWheelRemove(t *testing.T) {
 		tw.addTimer(delay, wfun, false)
 
 		<-testChan
-
 	})
 }
 

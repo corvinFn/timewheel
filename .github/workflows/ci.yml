@@ -1,0 +1,47 @@
+name: Go build test
+
+on:
+  pull_request:
+    branches:
+      - master
+  schedule:
+      - cron: '0 20 * * Sat'
+  push:
+
+
+env:
+  GLOBAL_ENV: global_env_value
+  DAY_OF_WEEK: ThursDay
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4 # caching is enabled by default
+        with:
+          go-version-file: 'go.mod'
+          cache-dependency-path: go.sum
+          # go-version: '1.19.x'
+          # go-version: 'stable'
+
+      - name: Build ${{ github.ref_name }}
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v ./...
+
+      - name: Use variables
+        if: ${{ env.DAY_OF_WEEK == 'ThursDay' }}
+          # if [[ env.DAY_OF_WEEK == 'ThursDay' ]]; then
+          # fi
+        run: |
+          echo "repository variable : $REPOSITORY_VAR"
+          echo "secret var : $REPOSITORY_SECRET"
+          echo "global env : $GLOBAL_ENV"
+        env:
+          REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
+          REPOSITORY_SECRET: ${{ secrets.SECRET_TEST_NAME }}

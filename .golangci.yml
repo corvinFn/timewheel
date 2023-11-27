@@ -1,0 +1,102 @@
+linters-settings:
+  dupl:
+    threshold: 100
+  funlen:
+    lines: 100
+    statements: 50
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gocritic:
+    settings:
+      hugeParam:
+        sizeThreshold: 100
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - dupImport # https://github.com/go-critic/go-critic/issues/845
+      - ifElseChain
+      - octalLiteral
+      - whyNoLint
+      - wrapperFunc
+      - unnecessaryBlock
+  gocyclo:
+    min-complexity: 15
+  goimports:
+    local-prefixes: github.com/monacohq/ncw-x,github.com/monacohq/ncw_nft
+  golint:
+    min-confidence: 0.8
+  gomnd:
+    settings:
+      mnd:
+        # don't include the "operation" and "assign"
+        checks:
+          - argument
+          - case
+          - condition
+          - return
+  lll:
+    line-length: 140
+  maligned:
+    suggest-new: true
+  misspell:
+    locale: US
+linters:
+  # please, do not use `enable-all`: it's deprecated and will be removed soon.
+  # inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint
+  disable-all: true
+  enable:
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exportloopref
+    - funlen
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - goimports
+    - gomnd
+    - goprintffuncname
+    - gosec
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - revive
+    - typecheck
+    - unconvert
+    - unused
+    - whitespace
+    - dupword
+    - unparam
+    - unconvert
+
+issues:
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    - linters:
+        - gomnd
+      source: "\\.New.*()"
+
+    - linters:
+        - gomnd
+      source: "strconv\\..*()"
+
+    - linters:
+        - gomnd
+      source: " make()"
+
+run:
+  skip-dirs:
+    - docs
+    - tmp
+  timeout: 3m
+  allow-parallel-runners: true

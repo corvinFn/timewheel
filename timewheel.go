@@ -17,7 +17,7 @@ type CallBack func()
 
 // based on https://github.com/ouqiang/timewheel
 type TimeWheel struct {
-	noCopy noCopy
+	noCopy noCopy // nolint: unused
 
 	interval          time.Duration // time interval to moving forward
 	ticker            *time.Ticker
@@ -185,7 +185,7 @@ func (tw *TimeWheel) addTask(task *Task) {
 	}
 }
 
-func (tw *TimeWheel) getPositionAndCircle(d time.Duration) (pos int64, circle int64) {
+func (tw *TimeWheel) getPositionAndCircle(d time.Duration) (pos, circle int64) {
 	delayNanoseconds := d.Nanoseconds()
 	intervalNanoseconds := tw.interval.Nanoseconds()
 	circle = delayNanoseconds / intervalNanoseconds / tw.slotNum
@@ -238,8 +238,3 @@ func RemoveTimer(key string) {
 func Stop() {
 	tw.stop()
 }
-
-type noCopy struct{}
-
-func (*noCopy) Lock()   {}
-func (*noCopy) Unlock() {}
